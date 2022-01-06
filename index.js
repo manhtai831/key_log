@@ -39,6 +39,16 @@ app.post("/log", async function (req, res) {
 
 });
 
+app.post("/clear-log", async function (req, res) {
+    try {
+       await fs.writeFileSync('log.txt','');
+        return res.json({'time_stamp': getNow(), 'status': 'Success'});
+    } catch (e) {
+        return res.json({'time_stamp': getNow(), 'status': 'Error'});
+    }
+
+});
+
 function getNow() {
     return moment().format('DD/MM/YYYY_HH:mm:ss');
 }
