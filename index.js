@@ -2,6 +2,7 @@ const bodyParser = require("body-parser");
 const express = require("express");
 const cors = require('cors');
 const fs = require('fs');
+const path = require('path');
 const moment = require('moment');
 
 const app = express();
@@ -41,8 +42,26 @@ app.post("/log", async function (req, res) {
 
 app.post("/clear-log", async function (req, res) {
     try {
-       await fs.writeFileSync('log.txt','');
+        await fs.writeFileSync('log.txt', '');
         return res.json({'time_stamp': getNow(), 'status': 'Success'});
+    } catch (e) {
+        return res.json({'time_stamp': getNow(), 'status': 'Error'});
+    }
+
+});
+
+app.post("/get-log", async function (req, res) {
+    try {
+        var filePath = path.join(__dirname, 'log.txt');
+        fs.readFile(filePath, {encoding: 'utf-8'}, function (err, data) {
+            if (!err) {
+                console.log('received data: ' + data);
+                return res.json({'time_stamp': getNow(), 'status': 'Success','data':data});
+            } else {
+                console.log(err);
+            }
+        });
+
     } catch (e) {
         return res.json({'time_stamp': getNow(), 'status': 'Error'});
     }
